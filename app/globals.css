@@ -2,26 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+html,
+body {
+  @apply min-h-screen;
+}
+body {
+  @apply flex flex-col justify-center items-center gap-12 p-6 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer utilities {
+  .glass {
+    @apply bg-white backdrop-blur-sm bg-opacity-10;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  /* ====================================== Buttons ====================================== */
+  .btn {
+    @apply hover:scale-105 hover:shadow-md shadow-neutral-500 active:scale-100 duration-100 rounded-3xl ease-in-out font-semibold capitalize;
+  }
+  /* Size */
+  .btn-sm {
+    @apply px-2.5 py-2 text-base;
+  }
+  .btn-md {
+    @apply px-5 py-2 text-lg;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-xl;
+  }
+  /* Mod */
+  .btn-primary {
+    @apply bg-pink-500 text-white;
+  }
+  .btn-secondary {
+    @apply outline outline-2 outline-blue-400 bg-white text-blue-400;
+  }
+  .btn-success {
+    @apply bg-green-400 text-white;
+  }
+  .btn-danger {
+    @apply outline outline-2 outline-red-400 bg-white text-red-400 hover:outline-none hover:bg-red-400 hover:text-white;
+  }
+  /* ====================================== Headings ====================================== */
+  .heading-1 {
+    @apply text-5xl font-semibold;
+  }
+  .heading-2 {
+    @apply text-3xl font-semibold;
+  }
+  .heading-3 {
+    @apply text-xl font-semibold;
+  }
 }
