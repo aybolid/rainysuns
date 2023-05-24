@@ -21,7 +21,7 @@ export default function CurrentWeather({ weatherData }: CurrentWeatherProps) {
       <h2 className="heading-2">{date}</h2>
 
       {/* Current weather + icon and temperature */}
-      <div className="h-full w-full flex justify-center items-center gap-6 glass p-4 rounded-md">
+      <div className="h-full w-full flex sm:flex-row flex-col justify-center items-center gap-6 glass p-4 rounded-md">
         <Image
           height={160}
           width={160}
@@ -30,12 +30,12 @@ export default function CurrentWeather({ weatherData }: CurrentWeatherProps) {
             !!weatherData.current_weather.is_day ? 'day' : 'night'
           }/${getWeatherIconPath(weatherData.current_weather.weathercode)}`}
         />
-        <div className="flex justify-center items-start flex-col">
+        <div className="flex justify-center items-center sm:items-start flex-col">
           <p className="text-6xl font-bold flex">
             {weatherData.current_weather.temperature}
             <span className="text-base">°C</span>
           </p>
-          <h2 className="heading-2">
+          <h2 className="heading-2 text-center">
             {getWeatherCondition(weatherData.current_weather.weathercode)}
           </h2>
         </div>

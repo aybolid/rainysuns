@@ -1,8 +1,11 @@
+'use client';
+
 import { Weather } from '@/interfaces/weather';
 import getWeatherIconPath from '@/utils/getWeatherIconPath';
 import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import React from 'react';
+import { useDraggable } from 'react-use-draggable-scroll';
 
 interface WeekForecastProps {
   weatherData: Weather;
@@ -19,10 +22,21 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
     };
   });
 
-  return (
-    <div className="h-full w-full flex flex-col justify-center items-center gap-2">
-      <h2 className="heading-2">7 Days Forecast</h2>
-      <div className="grid grid-cols-[repeat(7,minmax(0,1fr))] justify-center items-center gap-2 glass p-4 rounded-md">
+  const RenderedForecast = (): JSX.Element => {
+    const ref =
+      React.useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+    const { events } = useDraggable(ref, {
+      applyRubberBandEffect: true,
+      decayRate: 0,
+      safeDisplacement: 11,
+    });
+
+    return (
+      <div
+        ref={ref}
+        {...events}
+        className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-5xl custom-scroll select-none overflow-x-scroll grid grid-cols-[repeat(7,minmax(200px,1fr))] justify-start items-center gap-2 glass p-4 rounded-md"
+      >
         {dataToDisplay.map(
           ({ day, weathercode, rainMean, tmax, tmin }, idx) => (
             <div
@@ -38,7 +52,7 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
               </p>
               <div className="min-w-[180px] flex flex-col justify-center items-center gap-2 glass p-4 rounded-md">
                 <Image
-                  className="mb-4 my-2"
+                  className="mb-4 my-2 pointer-events-none"
                   height={120}
                   width={120}
                   alt="Weather icon"
@@ -57,6 +71,7 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
                 </div>
                 <div className="flex justify-center items-center gap-1">
                   <Image
+                    className="pointer-events-none"
                     src={'/weather/humidity.svg'}
                     alt="Rain"
                     width={30}
@@ -69,6 +84,13 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
           )
         )}
       </div>
+    );
+  };
+
+  return (
+    <div className="h-full w-full flex flex-col justify-center items-center gap-2">
+      <h2 className="heading-2">7 Days Forecast</h2>
+      <RenderedForecast />
     </div>
   );
 }

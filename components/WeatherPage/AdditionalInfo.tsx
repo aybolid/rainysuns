@@ -59,7 +59,7 @@ export default function AdditionalInfo({
   };
   const SunsetSunrise = (): JSX.Element => {
     return (
-      <div className="h-full w-full flex flex-col justify-center items-center gap-1">
+      <div className="h-full w-full flex md:flex-col flex-row col-span-2 md:col-span-1 justify-center items-center gap-2">
         <div className="w-full flex flex-col justify-center items-center gap-1">
           <h3 className="heading-3">Sunrise</h3>
           <div className="w-full flex justify-center items-center gap-2 glass p-4 rounded-md">
@@ -119,7 +119,7 @@ export default function AdditionalInfo({
   return (
     <div className="w-full flex col-span-2 flex-col justify-center items-center gap-2">
       <h2 className="heading-2">Additional Information</h2>
-      <div className="w-full grid grid-cols-5 justify-center items-start gap-4 glass p-4 rounded-md">
+      <div className="w-full grid grid-cols-2 md:grid-cols-5 justify-center items-start gap-4 glass p-4 rounded-md">
         <Wind />
         <Humidity />
         <SunsetSunrise />

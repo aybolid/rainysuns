@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { MutableRefObject } from 'react';
+import { useDraggable } from 'react-use-draggable-scroll';
 
 import { Weather } from '@/interfaces/weather';
 import getCurrentIndex from '@/utils/getCurrentIndex';
@@ -29,8 +32,20 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
   });
 
   const RenderedForecast = (): JSX.Element => {
+    const ref =
+      React.useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+    const { events } = useDraggable(ref, {
+      applyRubberBandEffect: true,
+      decayRate: 0,
+      safeDisplacement: 11,
+    });
+
     return (
-      <div className="grid grid-cols-[repeat(12,minmax(0,1fr))] justify-center items-center gap-2 glass p-4 rounded-md">
+      <div
+        ref={ref}
+        {...events}
+        className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-5xl custom-scroll select-none overflow-x-scroll grid grid-cols-[repeat(24,minmax(90px,90px))] justify-start items-center gap-2 glass p-4 rounded-md"
+      >
         {dataToDisplay.map(({ time, temp, precip }, idx) => (
           <div
             className="flex flex-col justify-center items-center gap-1"
@@ -43,13 +58,14 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
             >
               {idx === 0 ? 'Now' : time}
             </p>
-            <div className="min-w-[90px] glass p-2 rounded-md flex flex-col justify-center items-center">
+            <div className="w-[90px] cursor-grab glass p-2 rounded-md flex flex-col justify-center items-center">
               <p className="flex justify-center items-start">
                 {temp}
                 <span className="text-[8px]">°C</span>
               </p>
               <div className="flex justify-center items-center gap-1">
                 <Image
+                  className="pointer-events-none"
                   src={'/weather/humidity.svg'}
                   alt="Rain"
                   width={15}

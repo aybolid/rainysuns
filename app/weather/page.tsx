@@ -45,7 +45,7 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
       <div className="container h-full flex justify-center items-center">
         <div className="w-full h-full flex flex-col justify-center items-center gap-10">
           <h1 className="heading-1 mb-6">{stringifyLocation(location)}</h1>
-          <section className="w-full grid grid-cols-3 justify-center items-start gap-4">
+          <section className="w-full grid grid-cols-1 lg:grid-cols-3 justify-center items-start gap-4">
             <CurrentWeather weatherData={weatherData} />
             <AdditionalInfo weatherData={weatherData} />
           </section>

@@ -4,10 +4,10 @@
 
 html,
 body {
-  @apply min-h-screen;
+  @apply min-h-screen overflow-x-hidden;
 }
 body {
-  @apply flex flex-col justify-center items-center gap-12 p-12 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
+  @apply flex flex-col justify-center items-center gap-12 p-4 py-8 md:p-12 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
 }
 
 @layer utilities {
@@ -46,12 +46,42 @@ body {
   }
   /* ====================================== Headings ====================================== */
   .heading-1 {
-    @apply text-5xl font-semibold;
+    @apply lg:text-5xl md:text-4xl text-3xl  font-semibold;
   }
   .heading-2 {
-    @apply text-3xl font-semibold;
+    @apply lg:text-3xl md:text-2xl text-xl font-semibold;
   }
   .heading-3 {
-    @apply text-xl font-semibold;
+    @apply lg:text-xl text-lg font-semibold;
   }
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #ccddf4 transparent;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+  width: 10px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: transparent;
+}
+.custom-scroll::-webkit-scrollbar-track:hover {
+  background-color: #ccddf4;
+}
+.custom-scroll::-webkit-scrollbar-track:active {
+  background-color: #ccddf4;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #ccddf4;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb:active {
+  cursor: grabbing;
+  background-color: #ccddf4;
 }
