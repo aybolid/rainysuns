@@ -1,5 +1,5 @@
-import LocationForm from '@/components/HelloPage/LocationForm';
 import UseLocation from '@/components/HelloPage/UseLocation';
+import LocationSearch from '@/components/HelloPage/LocationSearch';
 
 export default function HelloPage() {
   return (
@@ -11,7 +11,7 @@ export default function HelloPage() {
           your current location or search for it.
         </p>
         <UseLocation />
-        <LocationForm />
+        <LocationSearch />
       </section>
     </div>
   );

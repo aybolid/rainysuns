@@ -1,15 +1,15 @@
 'use client';
 
 import React from 'react';
-import { useDebouncedCallback } from 'use-debounce';
 import Link from 'next/link';
+import { useDebouncedCallback } from 'use-debounce';
 
 import useForm from '@/hooks/useForm';
 import LabeledInput from '../elements/LabeledInput';
 import { Location } from '@/interfaces/location';
 import getLoactionLinkLabel from '@/utils/getLocationLinkLabel';
 
-const API_URL = process.env.NEXT_PUBLIC_GEOCODING_METEO_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
 const getLocation = async (locationName: string) => {
   const data: Location[] = await fetch(
@@ -25,7 +25,7 @@ const getLocation = async (locationName: string) => {
   return data;
 };
 
-export default function LocationForm() {
+export default function LocationSearch() {
   const { data, onChange } = useForm({ city: '' });
 
   const [locations, setLocations] = React.useState<Location[] | null>([]);
@@ -48,6 +48,9 @@ export default function LocationForm() {
     200
   );
   React.useEffect(() => {
+    const regex = /^[a-zA-Z\s]+$/;
+    if (!regex.test(data.city)) return;
+
     if (data.city.length > 1) {
       setIsLoading(true);
       debouncedLocationSearch();
@@ -74,11 +77,11 @@ export default function LocationForm() {
   };
 
   return (
-    <form className="w-full">
+    <form onSubmit={(e) => e.preventDefault()} className="w-full">
       <LabeledInput
         value={data.city}
         onChange={onChange}
-        label="Search for city"
+        label="Search for city (en)"
         placeholder="New York"
         type="text"
         name="city"

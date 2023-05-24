@@ -7,7 +7,7 @@ body {
   @apply min-h-screen;
 }
 body {
-  @apply flex flex-col justify-center items-center gap-12 p-6 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
+  @apply flex flex-col justify-center items-center gap-12 p-12 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
 }
 
 @layer utilities {

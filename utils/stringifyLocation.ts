@@ -3,7 +3,7 @@ import { getFlagEmoji } from './getLocationLinkLabel';
 
 const stringifyLocation = (location: ReverseGeocodingLocation) => {
   const flag = getFlagEmoji(location.country_code);
-  return `${flag} ${location.city}, ${location.country}`;
+  return `${flag} ${location.city}, ${location.state}`;
 };
 
 export default stringifyLocation;

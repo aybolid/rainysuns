@@ -1,16 +1,23 @@
 import React from 'react';
-import Image from 'next/image';
-import { format, parseISO } from 'date-fns';
+import { redirect } from 'next/navigation';
 
 import { Weather } from '@/interfaces/weather';
 import { ReverseGeocodingLocation } from '@/interfaces/location';
-import getWeatherCondition from '@/utils/getWeatherCondition';
-import getWeatherIconPath from '@/utils/getWeatherIconPath';
 import stringifyLocation from '@/utils/stringifyLocation';
+import CurrentWeather from '@/components/WeatherPage/CurrentWeather';
+import AdditionalInfo from '@/components/WeatherPage/AdditionalInfo';
+import WeatherMessage from '@/components/WeatherPage/WeatherMessage';
+import DayForecast from '@/components/WeatherPage/DayForecast';
+import WeekForecast from '@/components/WeatherPage/WeekForecast';
 
 const WEATHER_URL = process.env.NEXT_PUBLIC_WEATHER_API_URL;
-const GEOCODING_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
-const GEOCODING_KEY = process.env.NEXT_PUBLIC_GEOCODING_API_KEY;
+const GEOCODING_URL = process.env.NEXT_PUBLIC_GEOAPIFY_API_URL;
+const GEOCODING_KEY = process.env.NEXT_PUBLIC_GEOAPIFY_API_KEY;
+
+const DAILY =
+  'sunrise,sunset,weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_mean';
+const HOURLY =
+  'temperature_2m,relativehumidity_2m,dewpoint_2m,surface_pressure,visibility,apparent_temperature,uv_index,precipitation_probability';
 
 interface WeatherPageProps {
   searchParams: {
@@ -21,7 +28,8 @@ interface WeatherPageProps {
 
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const weatherData: Weather = await fetch(
-    `${WEATHER_URL}forecast?latitude=${searchParams.lat}&longitude=${searchParams.long}&current_weather=true`
+    `${WEATHER_URL}forecast?latitude=${searchParams.lat}&longitude=${searchParams.long}&models=best_match&timezone=auto&current_weather=true&daily=${DAILY}&hourly=${HOURLY}`,
+    { method: 'GET', cache: 'no-store' }
   ).then((res) => res.json());
 
   const location: ReverseGeocodingLocation = await fetch(
@@ -30,39 +38,28 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   )
     .then((res) => res.json())
     .then((data) => data.features[0].properties);
-
-  const weatherCondition = getWeatherCondition(
-    weatherData.current_weather.weathercode
-  );
+  if (location.country === 'Russia') redirect('/stand-with-ukraine');
 
   return (
     <>
       <div className="container h-full flex justify-center items-center">
-        <section className="w-full flex flex-col justify-center gap-4">
-          <h1 className="heading-1">{stringifyLocation(location)}</h1>
-          <div className="glass rounded-lg p-6">
-            <h3 className="heading-3">
-              {format(parseISO(weatherData.current_weather.time), 'PPpp')}
-            </h3>
-            <div className="w-fit flex justify-center items-center gap-6 glass p-4 rounded-md">
-              <Image
-                height={120}
-                width={120}
-                alt="Weather icon"
-                src={`/weather/${
-                  !!weatherData.current_weather.is_day ? 'day' : 'night'
-                }/${getWeatherIconPath(0)}`}
-              />
-              <div className="flex justify-center items-center flex-col">
-                <h2 className="heading-2">{weatherCondition}</h2>
-                <p className="text-5xl font-bold">
-                  {weatherData.current_weather.temperature} &#8451;
-                </p>
-              </div>
-            </div>
-            <pre>{JSON.stringify(weatherData, null, 2)}</pre>
-          </div>
-        </section>
+        <div className="w-full h-full flex flex-col justify-center items-center gap-10">
+          <h1 className="heading-1 mb-6">{stringifyLocation(location)}</h1>
+          <section className="w-full grid grid-cols-3 justify-center items-start gap-4">
+            <CurrentWeather weatherData={weatherData} />
+            <AdditionalInfo weatherData={weatherData} />
+          </section>
+          <section className="glass p-4 rounded-md">
+            <WeatherMessage weatherData={weatherData} />
+          </section>
+          <section>
+            <DayForecast weatherData={weatherData} />
+          </section>
+          <section>
+            <WeekForecast weatherData={weatherData} />
+          </section>
+          {/* <pre>{JSON.stringify(weatherData.hourly.time.slice(0, 24), null, 2)}</pre> */}
+        </div>
       </div>
     </>
   );

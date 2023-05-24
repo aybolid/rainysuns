@@ -7,6 +7,28 @@ export interface CurrentWeather {
   time: string;
 }
 
+export interface Daily {
+  time: string[];
+  sunrise: string[];
+  sunset: string[];
+  weathercode: number[];
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+  precipitation_probability_mean: number[];
+}
+
+export interface Hourly {
+  time: string[];
+  temperature_2m: number[];
+  relativehumidity_2m: number[];
+  dewpoint_2m: number[];
+  surface_pressure: number[];
+  visibility: number[];
+  apparent_temperature: number[];
+  uv_index: number[];
+  precipitation_probability: number[];
+}
+
 export interface Weather {
   latitude: number;
   longitude: number;
@@ -17,4 +39,6 @@ export interface Weather {
   elevation: number;
 
   current_weather: CurrentWeather;
+  daily: Daily;
+  hourly: Hourly;
 }
