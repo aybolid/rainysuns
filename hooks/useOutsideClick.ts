@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const useOutsideClick = (ref: any, callback: () => void) => {
   React.useEffect(() => {
@@ -8,10 +8,10 @@ const useOutsideClick = (ref: any, callback: () => void) => {
       }
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener("click", handleClick);
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener("click", handleClick);
     };
   });
 };

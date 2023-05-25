@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface MainContentProps {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ interface MainContentProps {
 
 export default function MainContent({ children }: MainContentProps) {
   return (
-    <main className="w-full flex-grow flex flex-col justify-center items-center">
+    <main className="flex w-full flex-grow flex-col items-center justify-center">
       {children}
     </main>
   );

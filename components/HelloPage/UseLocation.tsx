@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { useRouter } from "next/navigation";
 
-import Button from '../elements/Button';
-
+import Button from "../elements/Button";
 
 export default function UseLocation() {
   const [loading, setLoading] = React.useState(false);
@@ -20,15 +19,15 @@ export default function UseLocation() {
         r.push(`/weather?long=${long}&lat=${lat}`);
       });
     } else {
-      alert('Geolocation is not supported by this browser.');
+      alert("Geolocation is not supported by this browser.");
     }
   };
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="flex w-full items-center justify-center">
       <Button
         onClick={handleGetLocation}
-        label={loading ? 'Loading...' : 'Use My Location'}
+        label={loading ? "Loading..." : "Use My Location"}
         size="lg"
         type="primary"
       />

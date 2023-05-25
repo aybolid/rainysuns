@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { MouseEvent, use } from 'react';
-import Link from 'next/link';
-import { useDebouncedCallback } from 'use-debounce';
+import React, { MouseEvent, use } from "react";
+import Link from "next/link";
+import { useDebouncedCallback } from "use-debounce";
 
-import useForm from '@/hooks/useForm';
-import LabeledInput from '../elements/LabeledInput';
-import { Location } from '@/interfaces/location';
-import getLoactionLinkLabel from '@/utils/getLocationLinkLabel';
-import useOutsideClick from '@/hooks/useOutsideClick';
+import useForm from "@/hooks/useForm";
+import LabeledInput from "../elements/LabeledInput";
+import { Location } from "@/interfaces/location";
+import getLoactionLinkLabel from "@/utils/getLocationLinkLabel";
+import useOutsideClick from "@/hooks/useOutsideClick";
 import addLocationToStorage, {
   StorageLocation,
-} from '@/utils/addLocationToStorage';
+} from "@/utils/addLocationToStorage";
 
 const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
@@ -22,7 +22,7 @@ const getLocation = async (locationName: string) => {
     .then((res) => res.json())
     .then((data) =>
       data.results
-        ? data.results.filter((city: Location) => city.country_code !== 'RU')
+        ? data.results.filter((city: Location) => city.country_code !== "RU")
         : []
     );
 
@@ -30,7 +30,7 @@ const getLocation = async (locationName: string) => {
 };
 
 export default function LocationSearch() {
-  const { data, onChange } = useForm({ city: '' });
+  const { data, onChange } = useForm({ city: "" });
 
   const [locations, setLocations] = React.useState<Location[] | undefined>(
     undefined
@@ -68,14 +68,14 @@ export default function LocationSearch() {
   }, [data.city, debouncedLocationSearch]);
   React.useEffect(() => {
     if (!history) {
-      setHistory(JSON.parse(localStorage.getItem('locations') || '[]'));
+      setHistory(JSON.parse(localStorage.getItem("locations") || "[]"));
     }
   }, [history]);
 
   const RenderedLocations = (): JSX.Element => {
     return (
       <div
-        className={`absolute z-50 text-neutral-800 top-16 mt-2 left-0 w-full p-1 rounded-md bg-sky-50 flex flex-col justify-start items-start duration-150 ease-in-out`}
+        className={`absolute left-0 top-16 z-50 mt-2 flex w-full flex-col items-start justify-start rounded-md bg-sky-50 p-1 text-neutral-800 duration-150 ease-in-out`}
       >
         {isLoading && <p>Searching...</p>}
         {!isLoading && !locations?.length ? (
@@ -90,15 +90,15 @@ export default function LocationSearch() {
   };
   const RenderedHistory = (): JSX.Element => {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-3">
+      <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-3">
         {history?.map((location) => (
           <Link
             key={location.id}
-            className="flex w-full justify-start items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
+            className="glass flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-opacity-20"
             href={`/weather?long=${location.long}&lat=${location.lat}`}
           >
             <span className="text-2xl">{location.flag}</span>
-            <span className="text-lg">{location.label.split(', ')[0]}</span>
+            <span className="text-lg">{location.label.split(", ")[0]}</span>
           </Link>
         ))}
       </div>
@@ -107,7 +107,7 @@ export default function LocationSearch() {
 
   return (
     <>
-      <form onSubmit={(e) => e.preventDefault()} className="w-full relative">
+      <form onSubmit={(e) => e.preventDefault()} className="relative w-full">
         <LabeledInput
           value={data.city}
           onClick={() => setShowResults(true)}
@@ -149,7 +149,7 @@ const LoactionLink = ({ location }: { location: Location }) => {
   return (
     <Link
       onClick={() => setClicked(true)}
-      className="flex w-full justify-start items-center gap-2 hover:bg-blue-500/30 px-3 rounded-md"
+      className="flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-blue-500/30"
       href={`/weather?long=${location.longitude}&lat=${location.latitude}`}
     >
       <span className="text-2xl">{flag}</span>

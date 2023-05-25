@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonProps {
   label: string;
-  size: 'sm' | 'md' | 'lg';
-  type: 'primary' | 'secondary' | 'success' | 'danger';
+  size: "sm" | "md" | "lg";
+  type: "primary" | "secondary" | "success" | "danger";
   disabled?: boolean;
   onClick?: () => any;
 }
@@ -23,26 +23,26 @@ export default function Button({ disabled = false, ...props }: ButtonProps) {
   );
 }
 
-const getType = (propsType: ButtonProps['type']) => {
+const getType = (propsType: ButtonProps["type"]) => {
   switch (propsType) {
-    case 'primary':
-      return 'btn-primary';
-    case 'secondary':
-      return 'btn-secondary';
-    case 'success':
-      return 'btn-success';
-    case 'danger':
-      return 'btn-danger';
+    case "primary":
+      return "btn-primary";
+    case "secondary":
+      return "btn-secondary";
+    case "success":
+      return "btn-success";
+    case "danger":
+      return "btn-danger";
   }
 };
 
-const getSize = (propsSize: ButtonProps['size']) => {
+const getSize = (propsSize: ButtonProps["size"]) => {
   switch (propsSize) {
-    case 'sm':
-      return 'btn-sm';
-    case 'md':
-      return 'btn-md';
-    case 'lg':
-      return 'btn-lg';
+    case "sm":
+      return "btn-sm";
+    case "md":
+      return "btn-md";
+    case "lg":
+      return "btn-lg";
   }
 };

@@ -1,4 +1,4 @@
-import { Weather } from '@/interfaces/weather';
+import { Weather } from "@/interfaces/weather";
 
 const getCurrentIndex = (weatherData: Weather) => {
   const currentIndex = weatherData.hourly.time.findIndex(

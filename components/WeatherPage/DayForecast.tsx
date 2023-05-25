@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { MutableRefObject } from 'react';
-import { useDraggable } from 'react-use-draggable-scroll';
+import React, { MutableRefObject } from "react";
+import { useDraggable } from "react-use-draggable-scroll";
 
-import { Weather } from '@/interfaces/weather';
-import getCurrentIndex from '@/utils/getCurrentIndex';
-import { format, parseISO } from 'date-fns';
-import Image from 'next/image';
+import { Weather } from "@/interfaces/weather";
+import getCurrentIndex from "@/utils/getCurrentIndex";
+import { format, parseISO } from "date-fns";
+import Image from "next/image";
 
 interface DayForecastProps {
   weatherData: Weather;
@@ -23,9 +23,9 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
   const dataToDisplay = timeFromNow.map((time, i) => {
     return {
       time:
-        format(parseISO(time), 'HH:mm') === '00:00'
-          ? format(parseISO(time), 'dd.MM')
-          : format(parseISO(time), 'HH:mm'),
+        format(parseISO(time), "HH:mm") === "00:00"
+          ? format(parseISO(time), "dd.MM")
+          : format(parseISO(time), "HH:mm"),
       temp: tempFromNow[i],
       precip: precipFromNow[i],
     };
@@ -44,29 +44,29 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
       <div
         ref={ref}
         {...events}
-        className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-5xl custom-scroll select-none overflow-x-scroll grid grid-cols-[repeat(24,minmax(90px,90px))] justify-start items-center gap-2 glass p-4 rounded-md"
+        className="custom-scroll glass grid max-w-xs select-none grid-cols-[repeat(24,minmax(90px,90px))] items-center justify-start gap-2 overflow-x-scroll rounded-md p-4 sm:max-w-md md:max-w-xl lg:max-w-5xl"
       >
         {dataToDisplay.map(({ time, temp, precip }, idx) => (
           <div
-            className="flex flex-col justify-center items-center gap-1"
+            className="flex flex-col items-center justify-center gap-1"
             key={time}
           >
             <p
               className={
-                idx === 0 || !time.includes(':') ? 'text-pink-400' : ''
+                idx === 0 || !time.includes(":") ? "text-pink-400" : ""
               }
             >
-              {idx === 0 ? 'Now' : time}
+              {idx === 0 ? "Now" : time}
             </p>
-            <div className="w-[90px] glass p-2 rounded-md flex flex-col justify-center items-center">
-              <p className="flex justify-center items-start">
+            <div className="glass flex w-[90px] flex-col items-center justify-center rounded-md p-2">
+              <p className="flex items-start justify-center">
                 {temp}
                 <span className="text-[8px]">°C</span>
               </p>
-              <div className="flex justify-center items-center gap-1">
+              <div className="flex items-center justify-center gap-1">
                 <Image
                   className="pointer-events-none"
-                  src={'/weather/humidity.svg'}
+                  src={"/weather/humidity.svg"}
                   alt="Rain"
                   width={15}
                   height={15}
@@ -81,7 +81,7 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
   };
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center gap-2">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2">
       <h2 className="heading-2">24 Hours Forecast</h2>
       <RenderedForecast />
       {/* <pre>{JSON.stringify(timeFromNow, null, 2)}</pre> */}

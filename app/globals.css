@@ -7,19 +7,19 @@ body {
   @apply min-h-screen overflow-x-hidden;
 }
 body {
-  @apply flex flex-col justify-center items-center gap-12 p-4 py-8 md:p-12 bg-gradient-to-tr bg-no-repeat bg-cover bg-scroll from-indigo-950 via-indigo-900 to-indigo-800 text-neutral-200;
+  @apply flex flex-col items-center justify-center gap-12 bg-gradient-to-tr from-indigo-950 via-indigo-900 to-indigo-800 bg-cover bg-scroll bg-no-repeat p-4 py-8 text-neutral-200 md:p-12;
 }
 
 @layer utilities {
   .glass {
-    @apply bg-white backdrop-blur-sm bg-opacity-10;
+    @apply bg-white bg-opacity-10 backdrop-blur-sm;
   }
 }
 
 @layer components {
   /* ====================================== Buttons ====================================== */
   .btn {
-    @apply hover:scale-105 hover:shadow-md shadow-neutral-500 active:scale-100 duration-100 rounded-3xl ease-in-out font-semibold capitalize;
+    @apply rounded-3xl font-semibold capitalize shadow-neutral-500 duration-100 ease-in-out hover:scale-105 hover:shadow-md active:scale-100;
   }
   /* Size */
   .btn-sm {
@@ -36,23 +36,23 @@ body {
     @apply bg-pink-500 text-white;
   }
   .btn-secondary {
-    @apply outline outline-2 outline-blue-400 bg-white text-blue-400;
+    @apply bg-white text-blue-400 outline outline-2 outline-blue-400;
   }
   .btn-success {
     @apply bg-green-400 text-white;
   }
   .btn-danger {
-    @apply outline outline-2 outline-red-400 bg-white text-red-400 hover:outline-none hover:bg-red-400 hover:text-white;
+    @apply bg-white text-red-400 outline outline-2 outline-red-400 hover:bg-red-400 hover:text-white hover:outline-none;
   }
   /* ====================================== Headings ====================================== */
   .heading-1 {
-    @apply lg:text-5xl md:text-4xl text-3xl  font-semibold;
+    @apply text-3xl font-semibold md:text-4xl  lg:text-5xl;
   }
   .heading-2 {
-    @apply lg:text-3xl md:text-2xl text-xl font-semibold;
+    @apply text-xl font-semibold md:text-2xl lg:text-3xl;
   }
   .heading-3 {
-    @apply lg:text-xl text-lg font-semibold;
+    @apply text-lg font-semibold lg:text-xl;
   }
 }
 

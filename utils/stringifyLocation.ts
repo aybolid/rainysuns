@@ -1,5 +1,5 @@
-import { ReverseGeocodingLocation } from '@/interfaces/location';
-import { getFlagEmoji } from './getLocationLinkLabel';
+import { ReverseGeocodingLocation } from "@/interfaces/location";
+import { getFlagEmoji } from "./getLocationLinkLabel";
 
 const stringifyLocation = (location: ReverseGeocodingLocation) => {
   const flag = getFlagEmoji(location.country_code);

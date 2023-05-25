@@ -1,9 +1,9 @@
-import { Location } from '@/interfaces/location';
+import { Location } from "@/interfaces/location";
 
 export const getFlagEmoji = (countryCode: string) => {
   const codePoints = countryCode
     .toUpperCase()
-    .split('')
+    .split("")
     .map((char) => 127397 + char.charCodeAt(0));
 
   return String.fromCodePoint(...codePoints);
@@ -14,7 +14,7 @@ const getLoactionLinkLabel = (location: Location) => {
   const label = `${location.name}, ${
     location.admin1 || location.admin2 || location.admin3 || location.admin4
   }`;
-  
+
   return { flag, label };
 };
 

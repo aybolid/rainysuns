@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface FooterProps {
   copyYear: string;
@@ -6,13 +6,13 @@ interface FooterProps {
 
 export default function Footer({ copyYear }: FooterProps) {
   return (
-    <footer className="w-full flex justify-center items-center">
-      <div className="container w-full flex flex-col justify-center items-center">
+    <footer className="flex w-full items-center justify-center">
+      <div className="container flex w-full flex-col items-center justify-center">
         <small>&copy; {copyYear} - Weather App</small>
         <small>
-          Powered by{' '}
+          Powered by{" "}
           <a
-            className='underline'
+            className="underline"
             target="_blank"
             rel="noopener noreferrer"
             href="https://open-meteo.com/"

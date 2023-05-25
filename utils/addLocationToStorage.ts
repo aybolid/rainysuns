@@ -1,4 +1,4 @@
-import { Location } from '@/interfaces/location';
+import { Location } from "@/interfaces/location";
 
 export interface StorageLocation {
   flag: string;
@@ -9,11 +9,11 @@ export interface StorageLocation {
 }
 
 const addLocationToStorage = (newLocation: StorageLocation) => {
-  if (!localStorage.getItem('locations')) {
-    return localStorage.setItem('locations', JSON.stringify([newLocation]));
+  if (!localStorage.getItem("locations")) {
+    return localStorage.setItem("locations", JSON.stringify([newLocation]));
   }
 
-  const locations = JSON.parse(localStorage.getItem('locations') as string);
+  const locations = JSON.parse(localStorage.getItem("locations") as string);
 
   const alredyInStorage = locations.some(
     (loc: Location) => loc.id === newLocation.id
@@ -22,7 +22,7 @@ const addLocationToStorage = (newLocation: StorageLocation) => {
   if (locations.length >= 3) locations.pop();
 
   locations.unshift(newLocation);
-  localStorage.setItem('locations', JSON.stringify(locations));
+  localStorage.setItem("locations", JSON.stringify(locations));
 };
 
 export default addLocationToStorage;
