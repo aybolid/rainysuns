@@ -35,12 +35,10 @@ export default function LocationSearch() {
   const [locations, setLocations] = React.useState<Location[] | undefined>(
     undefined
   );
-  const [history, _] = React.useState<StorageLocation[]>(
-    JSON.parse(localStorage.getItem('locations') || '[]')
-  );
+  const [history, setHistory] = React.useState<StorageLocation[]>();
   const [isLoading, setIsLoading] = React.useState(false);
-
   const [showResults, setShowResults] = React.useState(false);
+
   const searchRef = React.useRef<HTMLDivElement>(null);
   useOutsideClick(searchRef, () => setShowResults(false));
 
@@ -51,11 +49,11 @@ export default function LocationSearch() {
       })
       .then(() => setIsLoading(false));
   };
-
   const debouncedLocationSearch = useDebouncedCallback(
     handleLocationSearch,
     200
   );
+
   React.useEffect(() => {
     const regex = /^[a-zA-Z\s]+$/;
     if (!regex.test(data.city)) return;
@@ -68,6 +66,11 @@ export default function LocationSearch() {
       setLocations(undefined);
     }
   }, [data.city, debouncedLocationSearch]);
+  React.useEffect(() => {
+    if (!history) {
+      setHistory(JSON.parse(localStorage.getItem('locations') || '[]'));
+    }
+  }, [history]);
 
   const RenderedLocations = (): JSX.Element => {
     return (
@@ -88,7 +91,7 @@ export default function LocationSearch() {
   const RenderedHistory = (): JSX.Element => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-3">
-        {history.map((location) => (
+        {history?.map((location) => (
           <Link
             key={location.id}
             className="flex w-full justify-start items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
@@ -120,7 +123,7 @@ export default function LocationSearch() {
           </div>
         )}
       </form>
-      {history.length > 0 && <RenderedHistory />}
+      {history && history.length > 0 && <RenderedHistory />}
     </>
   );
 }
