@@ -26,10 +26,9 @@ interface WeatherPageProps {
   };
 }
 
-export async function generateMetadata(
-  { searchParams }: WeatherPageProps,
-  parent?: ResolvedMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: WeatherPageProps): Promise<Metadata> {
   const { long, lat } = searchParams;
 
   const location: ReverseGeocodingLocation = await fetch(
@@ -42,7 +41,6 @@ export async function generateMetadata(
   return {
     title: `RainySuns - ${location.city}`,
     description: `Weather for ${location.city}`,
-    keywords: parent?.keywords
   };
 }
 
@@ -65,7 +63,9 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
     <>
       <div className="container flex h-full items-center justify-center">
         <div className="flex h-full w-full flex-col items-center justify-center gap-10">
-          <h1 className="heading-1 mb-6 w-full text-center">{stringifyLocation(location)}</h1>
+          <h1 className="heading-1 mb-6 w-full text-center">
+            {stringifyLocation(location)}
+          </h1>
           <section className="grid w-full grid-cols-1 items-start justify-center gap-4 lg:grid-cols-3">
             <CurrentWeather weatherData={weatherData} />
             <AdditionalInfo weatherData={weatherData} />
