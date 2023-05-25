@@ -8,6 +8,8 @@ interface LabeledInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   autoComplete?: 'on' | 'off';
+
+  onClick?: () => void;
 }
 
 export default function LabeledInput({
@@ -18,6 +20,7 @@ export default function LabeledInput({
     <label className="flex flex-col w-full">
       <span className="text-lg">{props.label}</span>
       <input
+        onClick={props.onClick}
         autoComplete={autoComplete}
         type={props.type}
         name={props.name}

@@ -37,7 +37,7 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
     const { events } = useDraggable(ref, {
       applyRubberBandEffect: true,
       decayRate: 0,
-      safeDisplacement: 11,
+      safeDisplacement: 21,
     });
 
     return (
@@ -58,7 +58,7 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
             >
               {idx === 0 ? 'Now' : time}
             </p>
-            <div className="w-[90px] cursor-grab glass p-2 rounded-md flex flex-col justify-center items-center">
+            <div className="w-[90px] glass p-2 rounded-md flex flex-col justify-center items-center">
               <p className="flex justify-center items-start">
                 {temp}
                 <span className="text-[8px]">°C</span>

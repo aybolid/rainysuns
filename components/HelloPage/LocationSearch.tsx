@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { MouseEvent, use } from 'react';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -8,6 +8,10 @@ import useForm from '@/hooks/useForm';
 import LabeledInput from '../elements/LabeledInput';
 import { Location } from '@/interfaces/location';
 import getLoactionLinkLabel from '@/utils/getLocationLinkLabel';
+import useOutsideClick from '@/hooks/useOutsideClick';
+import addLocationToStorage, {
+  StorageLocation,
+} from '@/utils/addLocationToStorage';
 
 const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
@@ -28,17 +32,22 @@ const getLocation = async (locationName: string) => {
 export default function LocationSearch() {
   const { data, onChange } = useForm({ city: '' });
 
-  const [locations, setLocations] = React.useState<Location[] | null>([]);
+  const [locations, setLocations] = React.useState<Location[] | undefined>(
+    undefined
+  );
+  const [history, _] = React.useState<StorageLocation[]>(
+    JSON.parse(localStorage.getItem('locations') || '[]')
+  );
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [showResults, setShowResults] = React.useState(false);
+  const searchRef = React.useRef<HTMLDivElement>(null);
+  useOutsideClick(searchRef, () => setShowResults(false));
 
   const handleLocationSearch = () => {
     getLocation(data.city)
       .then((data) => {
-        if (data.length === 0) {
-          setLocations(null);
-        } else {
-          setLocations(data);
-        }
+        setLocations(data);
       })
       .then(() => setIsLoading(false));
   };
@@ -56,19 +65,20 @@ export default function LocationSearch() {
       debouncedLocationSearch();
     } else {
       setIsLoading(false);
-      setLocations([]);
+      setLocations(undefined);
     }
   }, [data.city, debouncedLocationSearch]);
 
   const RenderedLocations = () => {
     return (
       <div
-        className={`mt-6 p-4 rounded-md bg-gradient-to-tr from-indigo-950 via-indigo-900 to-indigo-800 flex flex-col justify-start items-start gap-3 duration-150 ease-in-out`}
+        className={`absolute z-50 text-neutral-800 top-16 mt-2 left-0 w-full p-1 rounded-md bg-sky-50 flex flex-col justify-start items-start duration-150 ease-in-out`}
       >
-        {locations === null ? (
+        {isLoading && <p>Searching...</p>}
+        {!isLoading && !locations?.length ? (
           <p>No cities found</p>
         ) : (
-          locations.map((location) => (
+          locations!.map((location) => (
             <LoactionLink key={location.id} location={location} />
           ))
         )}
@@ -77,29 +87,58 @@ export default function LocationSearch() {
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="w-full">
-      <LabeledInput
-        value={data.city}
-        onChange={onChange}
-        label="Search for city (en)"
-        placeholder="New York"
-        type="text"
-        name="city"
-      />
-      {isLoading && <p className="w-full mt-6 text-center">Searching...</p>}
-      {locations === null || locations!.length > 0 ? (
-        <RenderedLocations />
-      ) : null}
-    </form>
+    <>
+      <form onSubmit={(e) => e.preventDefault()} className="w-full relative">
+        <LabeledInput
+          value={data.city}
+          onClick={() => setShowResults(true)}
+          onChange={onChange}
+          label="Search for city (en)"
+          placeholder="New York"
+          type="text"
+          name="city"
+        />
+        {locations && showResults && (
+          <div ref={searchRef}>
+            <RenderedLocations />
+          </div>
+        )}
+      </form>
+
+      <div className="flex flex-colg md:flex-row w-full gap-3">
+        {history.map((location) => (
+          <Link
+            key={location.id}
+            className="flex w-full justify-start items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
+            href={`/weather?long=${location.long}&lat=${location.lat}`}
+          >
+            <span className="text-2xl">{location.flag}</span>
+            <span className="text-lg">{location.label.split(', ')[0]}</span>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }
 
 const LoactionLink = ({ location }: { location: Location }) => {
   const { flag, label } = getLoactionLinkLabel(location);
 
+  const handleClick = () => {
+    const newLocation: StorageLocation = {
+      flag,
+      label,
+      id: location.id,
+      long: location.longitude,
+      lat: location.latitude,
+    };
+    addLocationToStorage(newLocation);
+  };
+
   return (
     <Link
-      className="flex justify-center items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
+      onClick={handleClick}
+      className="flex w-full justify-start items-center gap-2 hover:bg-blue-500/30 px-3 rounded-md"
       href={`/weather?long=${location.longitude}&lat=${location.latitude}`}
     >
       <span className="text-2xl">{flag}</span>

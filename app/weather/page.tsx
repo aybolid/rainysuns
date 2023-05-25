@@ -29,7 +29,7 @@ interface WeatherPageProps {
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const weatherData: Weather = await fetch(
     `${WEATHER_URL}forecast?latitude=${searchParams.lat}&longitude=${searchParams.long}&models=best_match&timezone=auto&current_weather=true&daily=${DAILY}&hourly=${HOURLY}`,
-    { method: 'GET', cache: 'no-store' }
+    { method: 'GET', next: { revalidate: 10 } }
   ).then((res) => res.json());
 
   const location: ReverseGeocodingLocation = await fetch(
