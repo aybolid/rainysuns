@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import { Weather } from "@/interfaces/weather";
-import getWeatherIconPath from "@/utils/getWeatherIconPath";
-import { format, parseISO } from "date-fns";
-import Image from "next/image";
-import React from "react";
-import { useDraggable } from "react-use-draggable-scroll";
+import React from 'react';
+import Image from 'next/image';
+import { format, parseISO } from 'date-fns';
+
+import { Weather } from '@/interfaces/weather';
+import getWeatherIconPath from '@/utils/weather/getWeatherIconPath';
+import { useDraggable } from 'react-use-draggable-scroll';
 
 interface WeekForecastProps {
   weatherData: Weather;
@@ -14,7 +15,7 @@ interface WeekForecastProps {
 export default function WeekForecast({ weatherData }: WeekForecastProps) {
   const dataToDisplay = weatherData.daily.time.map((time, i) => {
     return {
-      day: format(parseISO(time), "dd EE"),
+      day: format(parseISO(time), 'dd EE'),
       weathercode: weatherData.daily.weathercode[i],
       rainMean: weatherData.daily.precipitation_probability_mean[i],
       tmax: weatherData.daily.temperature_2m_max[i],
@@ -45,10 +46,10 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
             >
               <p
                 className={`text-xl font-semibold ${
-                  idx === 0 ? "text-pink-400" : ""
+                  idx === 0 ? 'text-pink-400' : ''
                 }`}
               >
-                {idx === 0 ? "Today" : day}
+                {idx === 0 ? 'Today' : day}
               </p>
               <div className="glass flex min-w-[180px] flex-col items-center justify-center gap-2 rounded-md p-4">
                 <Image
@@ -72,7 +73,7 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
                 <div className="flex items-center justify-center gap-1">
                   <Image
                     className="pointer-events-none"
-                    src={"/weather/humidity.svg"}
+                    src={'/weather/humidity.svg'}
                     alt="Rain"
                     width={30}
                     height={30}

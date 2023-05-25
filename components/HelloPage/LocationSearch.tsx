@@ -1,17 +1,17 @@
 "use client";
 
-import React, { MouseEvent, use } from "react";
+import React from "react";
 import Link from "next/link";
 import { useDebouncedCallback } from "use-debounce";
 
 import useForm from "@/hooks/useForm";
 import LabeledInput from "../elements/LabeledInput";
 import { Location } from "@/interfaces/location";
-import getLoactionLinkLabel from "@/utils/getLocationLinkLabel";
+import getLoactionLinkLabel from "@/utils/location/getLocationLinkLabel";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import addLocationToStorage, {
   StorageLocation,
-} from "@/utils/addLocationToStorage";
+} from "@/utils/location/addLocationToStorage";
 
 const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
@@ -36,8 +36,8 @@ export default function LocationSearch() {
     undefined
   );
   const [history, setHistory] = React.useState<StorageLocation[]>();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [showResults, setShowResults] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [showResults, setShowResults] = React.useState<boolean>(false);
 
   const searchRef = React.useRef<HTMLDivElement>(null);
   useOutsideClick(searchRef, () => setShowResults(false));
@@ -66,6 +66,7 @@ export default function LocationSearch() {
       setLocations(undefined);
     }
   }, [data.city, debouncedLocationSearch]);
+
   React.useEffect(() => {
     if (!history) {
       setHistory(JSON.parse(localStorage.getItem("locations") || "[]"));
@@ -112,7 +113,7 @@ export default function LocationSearch() {
           value={data.city}
           onClick={() => setShowResults(true)}
           onChange={onChange}
-          label="Search for city (en)"
+          label="Search for city (EN)"
           placeholder="New York"
           type="text"
           name="city"
@@ -132,7 +133,7 @@ const LoactionLink = ({ location }: { location: Location }) => {
   const [clicked, setClicked] = React.useState(false);
   const { flag, label } = getLoactionLinkLabel(location);
 
-  // implemented like this to avoid build error on production
+  // ! implemented this way to avoid build error on production
   React.useEffect(() => {
     if (!clicked) return;
     const newLocation: StorageLocation = {

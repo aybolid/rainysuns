@@ -1,11 +1,10 @@
-import React from "react";
 import Image from "next/image";
+import { format, parseISO } from "date-fns";
 
 import { Weather } from "@/interfaces/weather";
-import { format, parseISO } from "date-fns";
-import getCurrentIndex from "@/utils/getCurrentIndex";
-import mToKm from "@/utils/mToKm";
-import getUvLevel from "@/utils/getUvLevel";
+import getCurrentIndex from "@/utils/weather/getCurrentIndex";
+import mToKm from "@/utils/weather/mToKm";
+import getUvLevel from "@/utils/weather/getUvLevel";
 
 interface CurrentWeatherInfoProps {
   weatherData: Weather;
@@ -39,6 +38,7 @@ export default function AdditionalInfo({
       </div>
     );
   };
+
   const Humidity = (): JSX.Element => {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-1">
@@ -57,6 +57,7 @@ export default function AdditionalInfo({
       </div>
     );
   };
+
   const SunsetSunrise = (): JSX.Element => {
     return (
       <div className="col-span-2 flex h-full w-full flex-row items-center justify-center gap-2 md:col-span-1 md:flex-col">
@@ -91,6 +92,7 @@ export default function AdditionalInfo({
       </div>
     );
   };
+
   const MoreData = (): JSX.Element => {
     const data = {
       "Dew point": `${weatherData.hourly.dewpoint_2m[idx]} °C`,
@@ -101,6 +103,7 @@ export default function AdditionalInfo({
       )})`,
       "Feels like": `${weatherData.hourly.apparent_temperature[idx]} °C`,
     };
+
     return (
       <ul className="col-span-2 grid h-full grid-cols-2 items-start justify-start gap-2">
         {Object.entries(data).map(([key, value]) => (

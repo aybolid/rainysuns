@@ -1,6 +1,5 @@
-import React from "react";
 import { Weather } from "@/interfaces/weather";
-import getWeatherCondition from "@/utils/getWeatherCondition";
+import getWeatherCondition from "@/utils/weather/getWeatherCondition";
 
 interface WeatherMessageProps {
   weatherData: Weather;
@@ -10,7 +9,7 @@ export default function WeatherMessage({ weatherData }: WeatherMessageProps) {
   const condition = getWeatherCondition(weatherData.daily.weathercode[0]);
 
   return (
-    <p className="text-xl">
+    <p className="glass rounded-md p-4 text-xl">
       <span className="font-semibold text-pink-400">{condition}</span>{" "}
       {condition.endsWith("s") ? "are " : "is "}
       expected today with temperatures between{" "}

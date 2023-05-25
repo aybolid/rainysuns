@@ -1,5 +1,3 @@
-import React from "react";
-
 interface LabeledInputProps {
   label: string;
   placeholder: string;
@@ -7,13 +5,13 @@ interface LabeledInputProps {
   type: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
-  autoComplete?: "on" | "off";
+  autoComplete?: 'on' | 'off';
 
   onClick?: () => void;
 }
 
 export default function LabeledInput({
-  autoComplete = "off",
+  autoComplete = 'off',
   ...props
 }: LabeledInputProps) {
   return (

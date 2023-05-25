@@ -1,12 +1,12 @@
 "use client";
 
-import React, { MutableRefObject } from "react";
+import React from "react";
 import { useDraggable } from "react-use-draggable-scroll";
-
-import { Weather } from "@/interfaces/weather";
-import getCurrentIndex from "@/utils/getCurrentIndex";
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
+
+import { Weather } from "@/interfaces/weather";
+import getCurrentIndex from "@/utils/weather/getCurrentIndex";
 
 interface DayForecastProps {
   weatherData: Weather;
@@ -84,7 +84,6 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
     <div className="flex h-full w-full flex-col items-center justify-center gap-2">
       <h2 className="heading-2">24 Hours Forecast</h2>
       <RenderedForecast />
-      {/* <pre>{JSON.stringify(timeFromNow, null, 2)}</pre> */}
     </div>
   );
 }

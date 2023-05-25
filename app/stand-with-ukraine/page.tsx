@@ -1,4 +1,8 @@
-import React from "react";
+export const metadata = {
+  title: 'Stand with Ukraine',
+  description: 'Stand with Ukraine',
+  keywords: 'Stand with Ukraine',
+};
 
 export default function StandWithUkrainePage() {
   return (

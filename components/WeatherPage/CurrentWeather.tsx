@@ -1,10 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { format, parseISO } from "date-fns";
+import Image from 'next/image';
+import { format, parseISO } from 'date-fns';
 
-import getWeatherIconPath from "@/utils/getWeatherIconPath";
-import getWeatherCondition from "@/utils/getWeatherCondition";
-import { Weather } from "@/interfaces/weather";
+import getWeatherIconPath from '@/utils/weather/getWeatherIconPath';
+import getWeatherCondition from '@/utils/weather/getWeatherCondition';
+import { Weather } from '@/interfaces/weather';
 
 interface CurrentWeatherProps {
   weatherData: Weather;
@@ -13,7 +12,7 @@ interface CurrentWeatherProps {
 export default function CurrentWeather({ weatherData }: CurrentWeatherProps) {
   const date = format(
     parseISO(weatherData.current_weather.time),
-    "MMMM do, EEEE"
+    'MMMM do, EEEE'
   );
 
   return (
@@ -27,7 +26,7 @@ export default function CurrentWeather({ weatherData }: CurrentWeatherProps) {
           width={160}
           alt="Weather icon"
           src={`/weather/${
-            !!weatherData.current_weather.is_day ? "day" : "night"
+            !!weatherData.current_weather.is_day ? 'day' : 'night'
           }/${getWeatherIconPath(weatherData.current_weather.weathercode)}`}
         />
         <div className="flex flex-col items-center justify-center sm:items-start">
