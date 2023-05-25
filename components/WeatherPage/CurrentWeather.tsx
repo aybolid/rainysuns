@@ -32,7 +32,7 @@ export default function CurrentWeather({ weatherData }: CurrentWeatherProps) {
         <div className="flex flex-col items-center justify-center sm:items-start">
           <p className="flex text-6xl font-bold">
             {weatherData.current_weather.temperature}
-            <span className="text-base">°C</span>
+            <span className="text-base">{weatherData.hourly_units.temperature_2m}</span>
           </p>
           <h2 className="heading-2 text-center">
             {getWeatherCondition(weatherData.current_weather.weathercode)}

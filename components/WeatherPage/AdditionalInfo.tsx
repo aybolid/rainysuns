@@ -1,10 +1,9 @@
-import Image from "next/image";
-import { format, parseISO } from "date-fns";
+import Image from 'next/image';
+import { format, parseISO } from 'date-fns';
 
-import { Weather } from "@/interfaces/weather";
-import getCurrentIndex from "@/utils/weather/getCurrentIndex";
-import mToKm from "@/utils/weather/mToKm";
-import getUvLevel from "@/utils/weather/getUvLevel";
+import { Weather } from '@/interfaces/weather';
+import getCurrentIndex from '@/utils/weather/getCurrentIndex';
+import getUvLevel from '@/utils/weather/getUvLevel';
 
 interface CurrentWeatherInfoProps {
   weatherData: Weather;
@@ -20,16 +19,17 @@ export default function AdditionalInfo({
       <div className="flex h-full w-full flex-col items-center justify-center gap-1">
         <h3 className="heading-3">Wind Speed</h3>
         <div className="glass flex h-full w-full flex-col items-center justify-center gap-1 rounded-md p-4">
-          <Image src={"/weather/wind.svg"} alt="Wind" width={80} height={80} />
+          <Image src={'/weather/wind.svg'} alt="Wind" width={80} height={80} />
           <p className="text-xl">
-            {weatherData.current_weather.windspeed} km/h
+            {weatherData.current_weather.windspeed} {/* no wind speed unit */}
+            {weatherData.hourly_units.temperature_2m === '°C' ? 'Km/h' : 'Mph'}
           </p>
           <Image
             style={{
               transform:
-                "rotate(" + weatherData.current_weather.winddirection + "deg)",
+                'rotate(' + weatherData.current_weather.winddirection + 'deg)',
             }}
-            src={"/weather/winddir.svg"}
+            src={'/weather/winddir.svg'}
             alt="Wind Direction"
             width={20}
             height={20}
@@ -45,13 +45,14 @@ export default function AdditionalInfo({
         <h3 className="heading-3">Humidity</h3>
         <div className="glass flex h-full w-full flex-col items-center justify-center gap-1 rounded-md p-4">
           <Image
-            src={"/weather/humidity.svg"}
+            src={'/weather/humidity.svg'}
             alt="Humidity"
             width={80}
             height={80}
           />
           <p className="text-xl">
-            {weatherData.hourly.relativehumidity_2m[idx]} %
+            {weatherData.hourly.relativehumidity_2m[idx]}{' '}
+            {weatherData.hourly_units.relativehumidity_2m}
           </p>
         </div>
       </div>
@@ -65,13 +66,13 @@ export default function AdditionalInfo({
           <h3 className="heading-3">Sunrise</h3>
           <div className="glass flex w-full items-center justify-center gap-2 rounded-md p-4">
             <Image
-              src={"/weather/sunrise.svg"}
+              src={'/weather/sunrise.svg'}
               alt="Sunrise"
               width={40}
               height={40}
             />
             <p className="text-lg">
-              {format(parseISO(weatherData.daily.sunrise[0]), "HH:mm")}
+              {format(parseISO(weatherData.daily.sunrise[0]), 'HH:mm')}
             </p>
           </div>
         </div>
@@ -79,13 +80,13 @@ export default function AdditionalInfo({
           <h3 className="heading-3">Sunset</h3>
           <div className="glass flex w-full items-center justify-center gap-2 rounded-md p-4">
             <Image
-              src={"/weather/sunset.svg"}
+              src={'/weather/sunset.svg'}
               alt="Sunset"
               width={40}
               height={40}
             />
             <p className="text-lg">
-              {format(parseISO(weatherData.daily.sunset[0]), "HH:mm")}
+              {format(parseISO(weatherData.daily.sunset[0]), 'HH:mm')}
             </p>
           </div>
         </div>
@@ -95,13 +96,13 @@ export default function AdditionalInfo({
 
   const MoreData = (): JSX.Element => {
     const data = {
-      "Dew point": `${weatherData.hourly.dewpoint_2m[idx]} °C`,
-      Pressure: `${weatherData.hourly.surface_pressure[idx]} hPa`,
-      Visibility: `${mToKm(weatherData.hourly.visibility[idx])} km`,
-      "UV index": `${weatherData.hourly.uv_index[idx]} (${getUvLevel(
+      'Dew point': `${weatherData.hourly.dewpoint_2m[idx]} ${weatherData.hourly_units.dewpoint_2m}`,
+      Pressure: `${weatherData.hourly.surface_pressure[idx]} ${weatherData.hourly_units.surface_pressure}`,
+      Visibility: `${weatherData.hourly.visibility[idx]} ${weatherData.hourly_units.visibility}`,
+      'UV index': `${weatherData.hourly.uv_index[idx]} (${getUvLevel(
         weatherData.hourly.uv_index[idx]
       )})`,
-      "Feels like": `${weatherData.hourly.apparent_temperature[idx]} °C`,
+      'Feels like': `${weatherData.hourly.apparent_temperature[idx]} ${weatherData.hourly_units.apparent_temperature}`,
     };
 
     return (

@@ -62,12 +62,16 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
                 <div className="flex items-center justify-center gap-1 text-2xl font-semibold">
                   <p className="flex items-start justify-center">
                     {tmin}
-                    <span className="text-sm">°C</span>
+                    <span className="text-sm">
+                      {weatherData.daily_units.temperature_2m_min}
+                    </span>
                   </p>
                   <span>-</span>
                   <p className="flex items-start justify-center">
                     {tmax}
-                    <span className="text-sm">°C</span>
+                    <span className="text-sm">
+                      {weatherData.daily_units.temperature_2m_max}
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-1">
@@ -78,7 +82,10 @@ export default function WeekForecast({ weatherData }: WeekForecastProps) {
                     width={30}
                     height={30}
                   />
-                  <p>{rainMean}%</p>
+                  <p>
+                    {rainMean}
+                    {weatherData.daily_units.precipitation_probability_mean}
+                  </p>
                 </div>
               </div>
             </div>

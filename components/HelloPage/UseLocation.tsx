@@ -16,7 +16,7 @@ export default function UseLocation() {
         const { latitude, longitude } = pos.coords;
         const [lat, long] = [latitude.toFixed(4), longitude.toFixed(4)];
         setLoading(false);
-        r.push(`/weather?long=${long}&lat=${lat}`);
+        r.push(`/weather?long=${long}&lat=${lat}&units=${localStorage.getItem("units")}`);
       });
     } else {
       alert("Geolocation is not supported by this browser.");

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useDraggable } from "react-use-draggable-scroll";
-import { format, parseISO } from "date-fns";
-import Image from "next/image";
+import React from 'react';
+import { useDraggable } from 'react-use-draggable-scroll';
+import { format, parseISO } from 'date-fns';
+import Image from 'next/image';
 
-import { Weather } from "@/interfaces/weather";
-import getCurrentIndex from "@/utils/weather/getCurrentIndex";
+import { Weather } from '@/interfaces/weather';
+import getCurrentIndex from '@/utils/weather/getCurrentIndex';
 
 interface DayForecastProps {
   weatherData: Weather;
@@ -23,9 +23,9 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
   const dataToDisplay = timeFromNow.map((time, i) => {
     return {
       time:
-        format(parseISO(time), "HH:mm") === "00:00"
-          ? format(parseISO(time), "dd.MM")
-          : format(parseISO(time), "HH:mm"),
+        format(parseISO(time), 'HH:mm') === '00:00'
+          ? format(parseISO(time), 'dd.MM')
+          : format(parseISO(time), 'HH:mm'),
       temp: tempFromNow[i],
       precip: precipFromNow[i],
     };
@@ -53,25 +53,30 @@ export default function DayForecast({ weatherData }: DayForecastProps) {
           >
             <p
               className={
-                idx === 0 || !time.includes(":") ? "text-pink-400" : ""
+                idx === 0 || !time.includes(':') ? 'text-pink-400' : ''
               }
             >
-              {idx === 0 ? "Now" : time}
+              {idx === 0 ? 'Now' : time}
             </p>
             <div className="glass flex w-[90px] flex-col items-center justify-center rounded-md p-2">
               <p className="flex items-start justify-center">
                 {temp}
-                <span className="text-[8px]">°C</span>
+                <span className="text-[8px]">
+                  {weatherData.hourly_units.temperature_2m}
+                </span>
               </p>
               <div className="flex items-center justify-center gap-1">
                 <Image
                   className="pointer-events-none"
-                  src={"/weather/humidity.svg"}
+                  src={'/weather/humidity.svg'}
                   alt="Rain"
                   width={15}
                   height={15}
                 />
-                <small>{precip}%</small>
+                <small>
+                  {precip}
+                  {weatherData.hourly_units.precipitation_probability}
+                </small>
               </div>
             </div>
           </div>

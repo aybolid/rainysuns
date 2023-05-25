@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { useDebouncedCallback } from "use-debounce";
+import React from 'react';
+import Link from 'next/link';
+import { useDebouncedCallback } from 'use-debounce';
 
-import useForm from "@/hooks/useForm";
-import LabeledInput from "../elements/LabeledInput";
-import { Location } from "@/interfaces/location";
-import getLoactionLinkLabel from "@/utils/location/getLocationLinkLabel";
-import useOutsideClick from "@/hooks/useOutsideClick";
+import useForm from '@/hooks/useForm';
+import LabeledInput from '../elements/LabeledInput';
+import { Location } from '@/interfaces/location';
+import getLoactionLinkLabel from '@/utils/location/getLocationLinkLabel';
+import useOutsideClick from '@/hooks/useOutsideClick';
 import addLocationToStorage, {
   StorageLocation,
-} from "@/utils/location/addLocationToStorage";
+} from '@/utils/location/addLocationToStorage';
 
 const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
@@ -22,7 +22,7 @@ const getLocation = async (locationName: string) => {
     .then((res) => res.json())
     .then((data) =>
       data.results
-        ? data.results.filter((city: Location) => city.country_code !== "RU")
+        ? data.results.filter((city: Location) => city.country_code !== 'RU')
         : []
     );
 
@@ -30,7 +30,7 @@ const getLocation = async (locationName: string) => {
 };
 
 export default function LocationSearch() {
-  const { data, onChange } = useForm({ city: "" });
+  const { data, onChange } = useForm({ city: '' });
 
   const [locations, setLocations] = React.useState<Location[] | undefined>(
     undefined
@@ -69,7 +69,7 @@ export default function LocationSearch() {
 
   React.useEffect(() => {
     if (!history) {
-      setHistory(JSON.parse(localStorage.getItem("locations") || "[]"));
+      setHistory(JSON.parse(localStorage.getItem('locations') || '[]'));
     }
   }, [history]);
 
@@ -96,10 +96,12 @@ export default function LocationSearch() {
           <Link
             key={location.id}
             className="glass flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-opacity-20"
-            href={`/weather?long=${location.long}&lat=${location.lat}`}
+            href={`/weather?long=${location.long}&lat=${
+              location.lat
+            }&units=${localStorage.getItem('units')}`}
           >
             <span className="text-2xl">{location.flag}</span>
-            <span className="text-lg">{location.label.split(", ")[0]}</span>
+            <span className="text-lg">{location.label.split(', ')[0]}</span>
           </Link>
         ))}
       </div>
@@ -115,7 +117,7 @@ export default function LocationSearch() {
           onChange={onChange}
           label="Search for city (EN)"
           placeholder="New York"
-          type="text"
+          type="search"
           name="city"
         />
         {locations && showResults && (
@@ -151,7 +153,9 @@ const LoactionLink = ({ location }: { location: Location }) => {
     <Link
       onClick={() => setClicked(true)}
       className="flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-blue-500/30"
-      href={`/weather?long=${location.longitude}&lat=${location.latitude}`}
+      href={`/weather?long=${location.longitude}&lat=${
+        location.latitude
+      }&units=${localStorage.getItem('units')}`}
     >
       <span className="text-2xl">{flag}</span>
       <span className="text-lg">{label}</span>

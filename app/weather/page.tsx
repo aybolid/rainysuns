@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { Metadata, ResolvedMetadata } from 'next';
+import { Metadata } from 'next';
 
 import { Weather } from '@/interfaces/weather';
 import { ReverseGeocodingLocation } from '@/interfaces/location';
@@ -23,6 +23,7 @@ interface WeatherPageProps {
   searchParams: {
     long: string;
     lat: string;
+    units: 'metric' | 'imperial';
   };
 }
 
@@ -46,7 +47,13 @@ export async function generateMetadata({
 
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const weatherData: Weather = await fetch(
-    `${WEATHER_URL}forecast?latitude=${searchParams.lat}&longitude=${searchParams.long}&models=best_match&timezone=auto&current_weather=true&daily=${DAILY}&hourly=${HOURLY}`,
+    `${WEATHER_URL}forecast?latitude=${searchParams.lat}&longitude=${
+      searchParams.long
+    }&models=best_match&timezone=auto&current_weather=true&daily=${DAILY}&hourly=${HOURLY}${
+      searchParams.units === 'imperial'
+        ? '&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch'
+        : ''
+    }`,
     { method: 'GET', cache: 'no-store' }
   ).then((res) => res.json());
 
@@ -79,7 +86,7 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
           <section>
             <WeekForecast weatherData={weatherData} />
           </section>
-          {/* <pre>{JSON.stringify(weatherData.hourly.time.slice(0, 24), null, 2)}</pre> */}
+          {/* <pre>{JSON.stringify(weatherData, null, 2)}</pre> */}
         </div>
       </div>
     </>
