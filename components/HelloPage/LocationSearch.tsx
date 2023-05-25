@@ -69,7 +69,7 @@ export default function LocationSearch() {
     }
   }, [data.city, debouncedLocationSearch]);
 
-  const RenderedLocations = () => {
+  const RenderedLocations = (): JSX.Element => {
     return (
       <div
         className={`absolute z-50 text-neutral-800 top-16 mt-2 left-0 w-full p-1 rounded-md bg-sky-50 flex flex-col justify-start items-start duration-150 ease-in-out`}
@@ -82,6 +82,22 @@ export default function LocationSearch() {
             <LoactionLink key={location.id} location={location} />
           ))
         )}
+      </div>
+    );
+  };
+  const RenderedHistory = (): JSX.Element => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-3">
+        {history.map((location) => (
+          <Link
+            key={location.id}
+            className="flex w-full justify-start items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
+            href={`/weather?long=${location.long}&lat=${location.lat}`}
+          >
+            <span className="text-2xl">{location.flag}</span>
+            <span className="text-lg">{location.label.split(', ')[0]}</span>
+          </Link>
+        ))}
       </div>
     );
   };
@@ -104,27 +120,18 @@ export default function LocationSearch() {
           </div>
         )}
       </form>
-
-      <div className="flex flex-colg md:flex-row w-full gap-3">
-        {history.map((location) => (
-          <Link
-            key={location.id}
-            className="flex w-full justify-start items-center gap-2 glass hover:bg-opacity-20 px-3 rounded-md"
-            href={`/weather?long=${location.long}&lat=${location.lat}`}
-          >
-            <span className="text-2xl">{location.flag}</span>
-            <span className="text-lg">{location.label.split(', ')[0]}</span>
-          </Link>
-        ))}
-      </div>
+      {history.length > 0 && <RenderedHistory />}
     </>
   );
 }
 
 const LoactionLink = ({ location }: { location: Location }) => {
+  const [clicked, setClicked] = React.useState(false);
   const { flag, label } = getLoactionLinkLabel(location);
 
-  const handleClick = () => {
+  // implemented like this to avoid build error on production
+  React.useEffect(() => {
+    if (!clicked) return;
     const newLocation: StorageLocation = {
       flag,
       label,
@@ -133,11 +140,12 @@ const LoactionLink = ({ location }: { location: Location }) => {
       lat: location.latitude,
     };
     addLocationToStorage(newLocation);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clicked]);
 
   return (
     <Link
-      onClick={handleClick}
+      onClick={() => setClicked(true)}
       className="flex w-full justify-start items-center gap-2 hover:bg-blue-500/30 px-3 rounded-md"
       href={`/weather?long=${location.longitude}&lat=${location.latitude}`}
     >
