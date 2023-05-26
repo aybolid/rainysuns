@@ -110,7 +110,7 @@ export default function LocationSearch() {
             </Link>
           ))}
         </div>
-        <div className="flex w-full items-center justify-end">
+        <div className="flex w-full items-center justify-end mt-2">
           <Button
             type="danger"
             size="sm"
