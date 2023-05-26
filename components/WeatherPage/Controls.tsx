@@ -3,34 +3,28 @@
 import React from 'react';
 
 import Button from '../elements/Button';
+import useSettingsStore from '@/lib/stores/useSettingsStore';
 
 export default function Controls() {
-  const [units, setUnits] = React.useState<'metric' | 'imperial'>();
+  const [useMetric, toggleUnits] = useSettingsStore((state) => [
+    state.useMetric,
+    state.toggleUnits,
+  ]);
 
+  const [units, setUnits] = React.useState<'Metric' | 'Imperial'>();
   React.useEffect(() => {
-    const u = localStorage.getItem('units');
-    console.log('u: ', u);
-    if (u) {
-      setUnits(u as 'metric' | 'imperial');
+    if (useMetric) {
+      setUnits('Metric');
     } else {
-      localStorage.setItem('units', 'metric');
-      setUnits('metric');
+      setUnits('Imperial');
     }
-  }, [units]);
+  }, [useMetric]);
 
   return (
     <div>
       <Button
-        onClick={() => {
-          localStorage.setItem(
-            'units',
-            units === 'metric' ? 'imperial' : 'metric'
-          );
-          setUnits(units === 'metric' ? 'imperial' : 'metric');
-        }}
-        label={
-          !units ? 'Loading...' : units === 'metric' ? 'Metric' : 'Imperial'
-        }
+        onClick={() => toggleUnits()}
+        label={units ? (units as string) : 'Loading...'}
         size="lg"
         type="secondary"
       />

@@ -63,3 +63,11 @@ export interface ReverseGeocodingLocation {
   };
   place_id: string;
 }
+
+export interface HistoryLocation {
+  flag: string;
+  label: string;
+  id: number;
+  long: number;
+  lat: number;
+}

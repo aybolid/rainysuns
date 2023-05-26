@@ -1,17 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 
 import useForm from '@/hooks/useForm';
 import LabeledInput from '../elements/LabeledInput';
-import { Location } from '@/interfaces/location';
+import { HistoryLocation, Location } from '@/interfaces/location';
 import getLoactionLinkLabel from '@/utils/location/getLocationLinkLabel';
 import useOutsideClick from '@/hooks/useOutsideClick';
-import addLocationToStorage, {
-  StorageLocation,
-} from '@/utils/location/addLocationToStorage';
+import useSettingsStore from '@/lib/stores/useSettingsStore';
+import useHistoryStore from '@/lib/stores/useHistoryStore';
+import Button from '../elements/Button';
 
 const API_URL = process.env.NEXT_PUBLIC_GEOCODING_API_URL;
 
@@ -32,10 +32,16 @@ const getLocation = async (locationName: string) => {
 export default function LocationSearch() {
   const { data, onChange } = useForm({ city: '' });
 
+  const [useMetric] = useSettingsStore((state) => [state.useMetric]);
+  const [historyLocations, clearHistory] = useHistoryStore((state) => [
+    state.locations,
+    state.clearLocations,
+  ]);
+
   const [locations, setLocations] = React.useState<Location[] | undefined>(
     undefined
   );
-  const [history, setHistory] = React.useState<StorageLocation[]>();
+  const [history, setHistory] = React.useState<HistoryLocation[]>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [showResults, setShowResults] = React.useState<boolean>(false);
 
@@ -68,10 +74,8 @@ export default function LocationSearch() {
   }, [data.city, debouncedLocationSearch]);
 
   React.useEffect(() => {
-    if (!history) {
-      setHistory(JSON.parse(localStorage.getItem('locations') || '[]'));
-    }
-  }, [history]);
+    setHistory(historyLocations);
+  }, [historyLocations]);
 
   const RenderedLocations = (): JSX.Element => {
     return (
@@ -91,20 +95,30 @@ export default function LocationSearch() {
   };
   const RenderedHistory = (): JSX.Element => {
     return (
-      <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-3">
-        {history?.map((location) => (
-          <Link
-            key={location.id}
-            className="glass flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-opacity-20"
-            href={`/weather?long=${location.long}&lat=${
-              location.lat
-            }&units=${localStorage.getItem('units')}`}
-          >
-            <span className="text-2xl">{location.flag}</span>
-            <span className="text-lg">{location.label.split(', ')[0]}</span>
-          </Link>
-        ))}
-      </div>
+      <section className='w-full'>
+        <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-3">
+          {history?.map((location) => (
+            <Link
+              key={location.id}
+              className="glass flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-opacity-20"
+              href={`/weather?long=${location.long}&lat=${location.lat}&units=${
+                useMetric ? 'metric' : 'imperial'
+              }`}
+            >
+              <span className="text-2xl">{location.flag}</span>
+              <span className="text-lg">{location.label.split(', ')[0]}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="flex w-full items-center justify-end">
+          <Button
+            type="danger"
+            size="sm"
+            label="Clear history"
+            onClick={clearHistory}
+          />
+        </div>
+      </section>
     );
   };
 
@@ -132,20 +146,23 @@ export default function LocationSearch() {
 }
 
 const LoactionLink = ({ location }: { location: Location }) => {
+  const [addLocation] = useHistoryStore((state) => [state.addLocation]);
+  const [useMetric] = useSettingsStore((state) => [state.useMetric]);
+
   const [clicked, setClicked] = React.useState(false);
   const { flag, label } = getLoactionLinkLabel(location);
 
   // ! implemented this way to avoid build error on production
   React.useEffect(() => {
     if (!clicked) return;
-    const newLocation: StorageLocation = {
+    const newLocation: HistoryLocation = {
       flag,
       label,
       id: location.id,
       long: location.longitude,
       lat: location.latitude,
     };
-    addLocationToStorage(newLocation);
+    addLocation(newLocation);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clicked]);
 
@@ -155,7 +172,7 @@ const LoactionLink = ({ location }: { location: Location }) => {
       className="flex w-full items-center justify-start gap-2 rounded-md px-3 hover:bg-blue-500/30"
       href={`/weather?long=${location.longitude}&lat=${
         location.latitude
-      }&units=${localStorage.getItem('units')}`}
+      }&units=${useMetric ? 'metric' : 'imperial'}`}
     >
       <span className="text-2xl">{flag}</span>
       <span className="text-lg">{label}</span>

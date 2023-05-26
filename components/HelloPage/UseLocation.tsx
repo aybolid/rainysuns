@@ -1,11 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-import Button from "../elements/Button";
+import Button from '../elements/Button';
+import useSettingsStore from '@/lib/stores/useSettingsStore';
 
 export default function UseLocation() {
+  const [useMetric] = useSettingsStore((state) => [state.useMetric]);
+
   const [loading, setLoading] = React.useState(false);
   const r = useRouter();
 
@@ -16,10 +19,14 @@ export default function UseLocation() {
         const { latitude, longitude } = pos.coords;
         const [lat, long] = [latitude.toFixed(4), longitude.toFixed(4)];
         setLoading(false);
-        r.push(`/weather?long=${long}&lat=${lat}&units=${localStorage.getItem("units")}`);
+        r.push(
+          `/weather?long=${long}&lat=${lat}&units=${
+            useMetric ? 'metric' : 'imperial'
+          }`
+        );
       });
     } else {
-      alert("Geolocation is not supported by this browser.");
+      alert('Geolocation is not supported by this browser.');
     }
   };
 
@@ -27,7 +34,7 @@ export default function UseLocation() {
     <div className="flex w-full items-center justify-center">
       <Button
         onClick={handleGetLocation}
-        label={loading ? "Loading..." : "Use My Location"}
+        label={loading ? 'Loading...' : 'Use My Location'}
         size="lg"
         type="primary"
       />

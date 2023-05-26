@@ -23,7 +23,7 @@ body {
   }
   /* Size */
   .btn-sm {
-    @apply px-2.5 py-2 text-base;
+    @apply px-2 py-1 text-smg font-normal;
   }
   .btn-md {
     @apply px-5 py-2 text-lg;
@@ -42,7 +42,7 @@ body {
     @apply bg-green-400 text-white;
   }
   .btn-danger {
-    @apply bg-white text-red-400 outline outline-2 outline-red-400 hover:bg-red-400 hover:text-white hover:outline-none;
+    @apply bg-red-500/50 text-white hover:bg-red-500/100;
   }
   /* ====================================== Headings ====================================== */
   .heading-1 {
