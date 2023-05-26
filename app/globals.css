@@ -23,7 +23,7 @@ body {
   }
   /* Size */
   .btn-sm {
-    @apply px-2 py-1 text-smg font-normal;
+    @apply px-2 py-1 text-sm font-normal;
   }
   .btn-md {
     @apply px-5 py-2 text-lg;
